@@ -27,10 +27,8 @@ namespace RenameLockScreens {
             if (myLogFile.Exists) {
                 batchFromDownload.RemoveLockScreensIfExistInLog(new LockScreenBatchToLog(myLogFile));
             }
-            if (batchFromDownload.myLockScreens.Count > 0) {
-                batchFromDownload.MoveRenameAndMoveLockScreensToAspectRatioFolder(workingFolder);
-                batchFromDownload.LogLockScreensToFileAsJson(myLogFile.FullName);
-            }
+            batchFromDownload.CopyRenameAndMoveLockScreensToAspectRatioFolder(workingFolder);
+            batchFromDownload.LogLockScreensToFileAsJson(myLogFile.FullName);
         }
 
 

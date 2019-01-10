@@ -70,6 +70,68 @@ namespace RenameLockScreenTests {
         }
 
         [TestMethod]
+        public void CopyThenPointToNewFile() {
+            // Arrange
+            var fs = new MockFileSystem();
+            // need to add trailing slash to a mock foldername, otherwise it gives us "Could not find a part of the path"
+            string folder1 = @"c:\folder1";
+            string folder2 = @"c:\folder2";
+            fs.AddDirectory(folder1);
+            fs.AddDirectory(folder2);
+            var creationTime = DateTime.Now.AddHours(-4);
+            byte[] fileContentsBase64 = Encoding.ASCII.GetBytes("iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAE0lEQVR42mP8z8BQz4AEGEkXAADyrgX9UgHC3gAAAABJRU5ErkJggg==");
+
+            var fileToCopy = new MockFileData(fileContentsBase64) {
+                CreationTime = creationTime};
+            string filename1 = @"testfile01.jpg";
+            string filePath1 = fs.Path.Combine(folder1, filename1);
+
+            fs.AddFile(filePath1, fileToCopy);
+            FileInfoBase fi = fs.FileInfo.FromFileName(filePath1);
+
+            LockScreenImageToLog ls = new LockScreenImageToLog(fi, fs);
+            // Act
+
+            ls.CopyToFolder(folder2);
+            ls.TrimFilenameDownToLast(2);
+            // Assert
+            Assert.IsTrue(fs.FileExists(filePath1));
+            string filePath2 = fs.Path.Combine(folder2, filename1);
+            Assert.IsTrue(fs.FileExists(filePath2));
+            Assert.AreEqual("01.jpg", ls._fileInfo.Name);
+        }
+
+        [TestMethod]
+        public void FileInfoBase_CopyTo_ShouldKeepLengthOnCopy() {
+            // Arrange
+            var fs = new MockFileSystem();
+            // need to add trailing slash to a mock foldername, otherwise it gives us "Could not find a part of the path"
+            string folder1 = @"c:\folder1";
+            string folder2 = @"c:\folder2";
+            fs.AddDirectory(folder1);
+            fs.AddDirectory(folder2);
+            var creationTime = DateTime.Now.AddHours(-4);
+            byte[] fileContentsBase64 = Encoding.ASCII.GetBytes("iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAE0lEQVR42mP8z8BQz4AEGEkXAADyrgX9UgHC3gAAAABJRU5ErkJggg==");
+
+            var fileToCopy = new MockFileData(fileContentsBase64) {
+                CreationTime = creationTime
+            };
+            string filename1 = @"testfile01.jpg";
+            string filePath1 = fs.Path.Combine(folder1, filename1);
+
+            fs.AddFile(filePath1, fileToCopy);
+            FileInfoBase fi = fs.FileInfo.FromFileName(filePath1);
+
+            string filename2 = @"copyfile02.jpg";
+            string filePath2 = fs.Path.Combine(folder2, filename2);
+            // Act
+            fi.CopyTo(filePath2);
+            FileInfoBase fi2 = new FileInfo(filePath2);
+            // Assert
+            Assert.AreEqual(fi.Length, fi2.Length);
+        }
+
+        [TestMethod]
         public void NotTrimFilenameWhenArgumentIsLargerThanLength() {
             // arrange
             string myFileName = "1c4b311d47205c46951385c440c80bf12008ed1459b5d0d2b2bd1ec18a102d4e";

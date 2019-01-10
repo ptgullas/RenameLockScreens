@@ -44,19 +44,20 @@ namespace RenameLockScreens.Models {
         }
 
         public void TrimFilenameDownToLast(int maxCharactersDesiredInFilename = 7) {
-            if (Path.GetFileNameWithoutExtension(_fileInfo.Name).Length > maxCharactersDesiredInFilename) {
+            if (_fileSystem.Path.GetFileNameWithoutExtension(_fileInfo.Name).Length > maxCharactersDesiredInFilename) {
                 string newName = GetFilenameTrimmedDownToLast(maxCharactersDesiredInFilename);
                 // string newPath = Path.Combine(targetFolder, newName);
-                string currentDir = _fileInfo.DirectoryName;
-                string newPath = Path.Combine(currentDir, newName);
+                // string currentDir = _fileInfo.DirectoryName;
+                string newPath = _fileSystem.Path.Combine(_fileInfo.DirectoryName, newName);
                 _fileInfo.MoveTo(newPath);
             }
         }
 
         public string GetFilenameTrimmedDownToLast(int maxCharsDesiredInFilename = 7) {
-            string newName = Path.GetFileNameWithoutExtension(_fileInfo.Name);
+            string newName = _fileSystem.Path.GetFileNameWithoutExtension(_fileInfo.Name);
+            string ext = _fileSystem.Path.GetExtension(_fileInfo.Name);
             if (_fileInfo.Name.Length > maxCharsDesiredInFilename) {
-                newName = _fileInfo.Name.Substring(_fileInfo.Name.Length - maxCharsDesiredInFilename);
+                newName = newName.Substring(newName.Length - maxCharsDesiredInFilename) + ext;
             }
             return newName;
         }
@@ -76,8 +77,21 @@ namespace RenameLockScreens.Models {
         }
 
         public void MoveToFolder(string newFolder) {
-            string newPath = Path.Combine(newFolder, _fileInfo.Name);
+            string newPath = _fileSystem.Path.Combine(newFolder, _fileInfo.Name);
             _fileInfo.MoveTo(newPath);
+        }
+
+        public string CopyToFolder(string newFolder) {
+            string newPath = _fileSystem.Path.Combine(newFolder, _fileInfo.Name);
+            _fileInfo.CopyTo(newPath);
+            _fileInfo = new FileInfo(newPath);
+            return newPath;
+        }
+
+        public void PointToNewFile(string newPath) {
+            if (_fileSystem.File.Exists(newPath)) {
+                _fileInfo = new FileInfo(newPath);
+            }
         }
 
         public void MoveToAspectRatioFolder(string workingFolder) {

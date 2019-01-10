@@ -12,6 +12,7 @@ namespace RenameLockScreens.Models {
 
         private readonly IFileSystem _filesystem;
         public List<LockScreenImageToLog> myLockScreens;
+        private List<LockScreenImageToLog> oldLockScreens;
 
 
         public LockScreenBatchToLog(string directoryPath) 
@@ -22,6 +23,7 @@ namespace RenameLockScreens.Models {
             _filesystem = fileSystem;
             IEnumerable<string> files = GetFilesFromDownloadFolder(directoryPath);
             myLockScreens = new List<LockScreenImageToLog>();
+            oldLockScreens = new List<LockScreenImageToLog>();
             myLockScreens = CreateLockScreensFromFiles(files);
         }
 
@@ -33,14 +35,20 @@ namespace RenameLockScreens.Models {
         public LockScreenBatchToLog(FileInfoBase myFile, IFileSystem fileSystem) {
             _filesystem = fileSystem;
             string jsonObjects = _filesystem.File.ReadAllText(myFile.FullName);
+            oldLockScreens = new List<LockScreenImageToLog>();
             myLockScreens = JsonConvert.DeserializeObject<List<LockScreenImageToLog>>(jsonObjects);
         }
 
         public void RemoveLockScreensIfExistInLog(LockScreenBatchToLog lockScreensFromLogFile) {
             if (myLockScreens.Count > 0) {
-                myLockScreens = myLockScreens.Except(lockScreensFromLogFile.myLockScreens).ToList();
+                AddLockScreensFromLogToOldLockScreens(lockScreensFromLogFile);
+                myLockScreens = myLockScreens.Except(oldLockScreens).ToList();
                 // myLockScreens = myLockScreens.Intersect(lockScreensFromLogFile.myLockScreens).ToList();
             }
+        }
+
+        private void AddLockScreensFromLogToOldLockScreens(LockScreenBatchToLog lockScreensFromLogFile) {
+            oldLockScreens.AddRange(lockScreensFromLogFile.myLockScreens);
         }
 
         private IEnumerable<string> GetFilesFromDownloadFolder(string directoryPath) {
@@ -53,10 +61,11 @@ namespace RenameLockScreens.Models {
             return myFiles;
         }
 
-        public void MoveRenameAndMoveLockScreensToAspectRatioFolder(string workingFolder) {
+        public void CopyRenameAndMoveLockScreensToAspectRatioFolder(string workingFolder) {
             if (myLockScreens.Count > 0) {
                 foreach (LockScreenImageToLog ls in myLockScreens) {
-                    ls.MoveToFolder(workingFolder);
+                    string copyPath = ls.CopyToFolder(workingFolder);
+                    ls.PointToNewFile(copyPath);
                     ls.TrimFilenameDownToLast();
                     ls.AppendExtensionToFilename();
                     ls.MoveToAspectRatioFolder(workingFolder);
@@ -77,7 +86,7 @@ namespace RenameLockScreens.Models {
         private string SerializeLockScreensToJson() {
             string output = "";
             if (myLockScreens.Count > 0) {
-                output = JsonConvert.SerializeObject(myLockScreens, Formatting.Indented);
+                output = JsonConvert.SerializeObject(myLockScreens.Union(oldLockScreens).OrderBy(p => p.lastModifiedTime), Formatting.Indented);
             }
             return output;
         }
@@ -102,13 +111,16 @@ namespace RenameLockScreens.Models {
         }
 
         public void LogLockScreensToFileAsJson(string outputPath) {
-            FileInfoBase fi = new FileInfo(outputPath);
-            string jsonOutput = SerializeLockScreensToJson();
-            if (fi.Exists) {
-                _filesystem.File.AppendAllText(outputPath, jsonOutput);
-            }
-            else {
+            if (myLockScreens.Count > 0) {
+                FileInfoBase logFile = new FileInfo(outputPath);
+                string jsonOutput = SerializeLockScreensToJson();
                 _filesystem.File.WriteAllText(outputPath, jsonOutput);
+                //if (logFile.Exists) {
+                //    _filesystem.File.AppendAllText(outputPath, jsonOutput);
+                //}
+                //else {
+                //    _filesystem.File.WriteAllText(outputPath, jsonOutput);
+                //}
             }
         }
     }

@@ -13,6 +13,7 @@ namespace RenameLockScreenTests {
     public class LockScreenBatchShould {
         [TestMethod]
         public void CorrectlyReadNumberOfLockScreensInLog() {
+            // sample JSON log file. Single collection with 2 files:
             string base64String = "Ww0KICB7DQogICAgIm9yaWdpbmFsRmlsZU5hbWUiOiAiNzU5NGU3YTg2OTdlNjkyNmE0MDk2N2E4MmIyNjgwNDlhZGM1ZGYzYjY4MTUwZjI3NzBmYWFjNjYyZDhmZDliZCIsDQogICAgImZpbGVTaXplIjogNzMzMTMyLA0KICAgICJsYXN0TW9kaWZpZWRUaW1lIjogIjIwMTktMDEtMDNUMTQ6MjI6MjguMjMxMjAxOC0wNTowMCINCiAgfSwNCiAgew0KICAgICJvcmlnaW5hbEZpbGVOYW1lIjogImYyZTg3NGY5YmQzYjVlMmVkMDVkODRkMDgxMjg2YjI2MTAzMmM1NDMwYTM4OWZiNWRiMTMzZGViYWIzZDk0ZTkiLA0KICAgICJmaWxlU2l6ZSI6IDY3ODkxMSwNCiAgICAibGFzdE1vZGlmaWVkVGltZSI6ICIyMDE5LTAxLTAzVDE0OjIyOjI4LjM1Mzg3ODEtMDU6MDAiDQogIH0NCl0=";
             byte[] myLogFileBytes = Convert.FromBase64String(base64String);
             string myFileName = "mylogFile.json";
@@ -37,6 +38,7 @@ namespace RenameLockScreenTests {
 
             Assert.AreEqual(2, myBatch.myLockScreens.Count);
         }
+
 
         // looks like EnumerateFiles fails when files have no extension, and search pattern is *.
         [TestMethod]
