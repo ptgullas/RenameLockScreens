@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenameLockScreens", "RenameLockScreens\RenameLockScreens.csproj", "{5710FD58-5305-4A2B-AC3C-2760AD40716D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenameLockScreenTests", "RenameLockScreenTests\RenameLockScreenTests.csproj", "{22CEF2A9-7177-448C-9136-1DC9A47BB68D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5710FD58-5305-4A2B-AC3C-2760AD40716D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5710FD58-5305-4A2B-AC3C-2760AD40716D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5710FD58-5305-4A2B-AC3C-2760AD40716D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5710FD58-5305-4A2B-AC3C-2760AD40716D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22CEF2A9-7177-448C-9136-1DC9A47BB68D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22CEF2A9-7177-448C-9136-1DC9A47BB68D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22CEF2A9-7177-448C-9136-1DC9A47BB68D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22CEF2A9-7177-448C-9136-1DC9A47BB68D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D73E79F-F0AD-402F-8D19-B8AC8FA0A22B}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RenameLockScreens.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="defaultFolder" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Users\PGullas\Pictures\downloaded lock screens</Value>
+    </Setting>
+    <Setting Name="downloadFolder" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Users\PGullas\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets</Value>
+    </Setting>
+    <Setting Name="logFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">lockscreenlog.json</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
