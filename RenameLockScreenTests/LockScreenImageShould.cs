@@ -112,7 +112,7 @@ namespace RenameLockScreenTests {
             fs.AddDirectory(folder2);
             var creationTime = DateTime.Now.AddHours(-4);
             byte[] fileContentsBase64 = Encoding.ASCII.GetBytes("iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAE0lEQVR42mP8z8BQz4AEGEkXAADyrgX9UgHC3gAAAABJRU5ErkJggg==");
-
+            
             var fileToCopy = new MockFileData(fileContentsBase64) {
                 CreationTime = creationTime
             };
