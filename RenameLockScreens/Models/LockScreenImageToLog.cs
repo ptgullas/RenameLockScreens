@@ -103,6 +103,57 @@ namespace RenameLockScreens.Models {
             }
         }
 
+        public void MoveToFinalFolder(string workingPath)
+        {
+            string quarterlyPath = GetQuarterlyPath(workingPath);
+            CreateAspectRatioFolders(quarterlyPath);
+            MoveToAspectRatioFolder(quarterlyPath);
+        }
+
+        private void CreateAspectRatioFolders(string quarterlyPath)
+        {
+            CreateFolderIfDoesNotExist(Path.Combine(quarterlyPath, "portrait"));
+            CreateFolderIfDoesNotExist(Path.Combine(quarterlyPath, "landscape"));
+
+        }
+
+        private string GetQuarterlyPath(string workingPath)
+        {
+            string quarterlyFolder = GetQuarterlyFolderName();
+            return Path.Combine(workingPath, quarterlyFolder);
+        }
+
+        private void CreateFolderIfDoesNotExist(string pathToCreate)
+        {
+            if (!Directory.Exists(pathToCreate))
+            {
+                Directory.CreateDirectory(pathToCreate);
+            }
+        }
+
+        private string GetQuarterlyFolderName()
+        {
+            int year = _fileInfo.LastWriteTime.Year;
+            int month = _fileInfo.LastWriteTime.Month;
+            string quarter = "";
+            switch(month)
+            {
+                case int i when (i < 4):
+                    quarter = "Q1";
+                    break;
+                case int i when (i < 7):
+                    quarter = "Q2";
+                    break;
+                case int i when (i < 10):
+                    quarter = "Q3";
+                    break;
+                default:
+                    quarter = "Q4";
+                    break;
+            }
+            return $"{year.ToString()} {quarter}";
+        }
+
         public bool IsPortrait() {
             bool isWider = false;
             

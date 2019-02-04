@@ -19,8 +19,10 @@ namespace RenameLockScreens {
         // Not sure if I want this to actually be used in Production, but it's the basic program flow:
         static void ProcessLogFiles(LockScreenBatchToLog batchFromDownload) {
             string workingFolder = Settings.Default.defaultFolder;
+            CreateNecessaryFoldersIfTheyDoNotExist(workingFolder);
             string baseLogFileName = Settings.Default.logFileName; // $"lockscreenlog_{DateTime.Now.ToString("yyyyMMddHHmmss")}.json";
             string logFilePath = Path.Combine(workingFolder, "log", baseLogFileName);
+
 
             FileInfo myLogFile = new FileInfo(logFilePath);
 
@@ -31,6 +33,18 @@ namespace RenameLockScreens {
             batchFromDownload.LogLockScreensToFileAsJson(myLogFile.FullName);
         }
 
+        static void CreateNecessaryFoldersIfTheyDoNotExist(string workingFolder)
+        {
+            CreateFolderIfDoesNotExist(Path.Combine(workingFolder, "log"));
+        }
+
+        static void CreateFolderIfDoesNotExist(string logFilePath)
+        {
+            if (!Directory.Exists(logFilePath))
+            {
+                Directory.CreateDirectory(logFilePath);
+            }
+        }
 
         static void CreateInitialLog() {
             string logFileLocation = Settings.Default.defaultFolder + "\\log";

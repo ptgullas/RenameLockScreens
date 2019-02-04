@@ -68,7 +68,7 @@ namespace RenameLockScreens.Models {
                     ls.PointToNewFile(copyPath);
                     ls.TrimFilenameDownToLast();
                     ls.AppendExtensionToFilename();
-                    ls.MoveToAspectRatioFolder(workingFolder);
+                    ls.MoveToFinalFolder(workingFolder);
                 }
             }
         }
